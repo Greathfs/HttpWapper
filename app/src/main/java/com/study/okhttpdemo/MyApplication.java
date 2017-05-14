@@ -13,6 +13,6 @@ public class MyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        RetrofitHelper.init(this,"http://112.124.22.238:8081");
+        RetrofitHelper.init(this,"http://112.124.22.238:8081/");
     }
 }

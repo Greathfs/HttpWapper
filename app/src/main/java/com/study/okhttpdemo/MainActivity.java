@@ -53,8 +53,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void testRetrofit(View view) {
-        //apiUrl格式："xxx/xxxxx"
-        Request request = RetrofitHelper.newPostRequest("/course_api/banner/query");
+        Request request = RetrofitHelper.newPostRequest("course_api/banner/query");
         request.putParams("type",1);
         Call call = RetrofitHelper.send(request, new HttpResponseListener<List<Banner>>() {
 
