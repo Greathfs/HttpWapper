@@ -63,7 +63,10 @@ public class MainActivity extends AppCompatActivity {
 
     public void testRetrofit(View view) {
         Request request = RetrofitHelper.newGetRequest("course_api/banner/query");
-        request.putParams("type",1);
+//        request.putParams("type",1);
+        Map<String,Object> map=new HashMap<>();
+        map.put("type",1);
+        request.putParamsMap(map);
         Call call = RetrofitHelper.send(request, new HttpResponseListener<List<Banner>>() {
 
             @Override
