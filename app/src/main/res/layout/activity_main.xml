@@ -20,4 +20,11 @@
         android:onClick="testRetrofit"
         android:text="测试Retrofit"/>
 
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="testXutils"
+        android:text="测试Xutils"/>
+
 </LinearLayout>

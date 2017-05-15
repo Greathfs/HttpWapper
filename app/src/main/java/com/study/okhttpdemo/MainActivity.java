@@ -5,12 +5,20 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.study.okhttpdemo.bean.Banner;
 import com.study.okhttpdemo.okhttp.OkHttpHelper;
 import com.study.okhttpdemo.okhttp.SimpleCallBack;
 import com.study.okhttpdemo.retrofit.HttpResponseListener;
 import com.study.okhttpdemo.retrofit.Request;
 import com.study.okhttpdemo.retrofit.RetrofitHelper;
+import com.study.okhttpdemo.xutils.API;
+import com.study.okhttpdemo.xutils.bean.CreateAccountParam;
+import com.study.okhttpdemo.xutils.bean.CreateAccountResult;
+import com.study.okhttpdemo.xutils.http.BaseRequestParam;
+import com.study.okhttpdemo.xutils.http.HttpManager;
+import com.study.okhttpdemo.xutils.http.RequestCallBack;
+import com.study.okhttpdemo.xutils.utils.LogUtil;
 
 import java.util.HashMap;
 import java.util.List;
@@ -22,6 +30,7 @@ import okhttp3.ResponseBody;
 import retrofit2.Call;
 
 public class MainActivity extends AppCompatActivity {
+    private static final String TAG = "MainActivity";
 
     private OkHttpHelper mOkHttpHelper;
 
@@ -53,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void testRetrofit(View view) {
-        Request request = RetrofitHelper.newPostRequest("course_api/banner/query");
+        Request request = RetrofitHelper.newGetRequest("course_api/banner/query");
         request.putParams("type",1);
         Call call = RetrofitHelper.send(request, new HttpResponseListener<List<Banner>>() {
 
@@ -66,6 +75,34 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable e) {
                 Toast.makeText(MainActivity.this, "error", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    public void testXutils(View view) {
+        HttpManager httpManager = new HttpManager.Builder().build();
+        BaseRequestParam baseRequestParam = new BaseRequestParam(API.METHOD_CREATE_ACCOUNT);
+        CreateAccountParam createAccountParam = new CreateAccountParam();
+        createAccountParam.setName("10043615");
+        createAccountParam.setSource("2");
+        baseRequestParam.setBizContent(new Gson().toJson(createAccountParam));
+        httpManager.request(baseRequestParam, new RequestCallBack<CreateAccountResult>() {
+            @Override
+            public void onSuccess(CreateAccountResult result) {
+                Toast.makeText(MainActivity.this, "success", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onError(Exception error, String code, String msg) {
+                super.onError(error, code, msg);
+                LogUtil.d(TAG,msg);
+                Toast.makeText(MainActivity.this, "onError", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onSubError(String subCode, String msg) {
+                super.onSubError(subCode, msg);
+                Toast.makeText(MainActivity.this, "onSubError", Toast.LENGTH_SHORT).show();
             }
         });
     }
